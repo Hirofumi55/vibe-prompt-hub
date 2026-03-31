@@ -1,0 +1,79 @@
+---
+import Icon from '../common/Icon.astro';
+
+interface Props {
+  promptCount: number;
+  categoryCount: number;
+  featuredCount: number;
+}
+
+const { promptCount, categoryCount, featuredCount } = Astro.props;
+---
+
+<section class="section-shell overflow-hidden px-5 py-6 sm:px-7 sm:py-8">
+  <div class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+    <div>
+      <div class="chip w-fit bg-accent/12 text-text">
+        <Icon name="sparkles" size={16} />
+        バイブコーディング向けに最適化
+      </div>
+      <h1 class="mt-5 max-w-3xl text-3xl font-bold leading-tight text-text sm:text-5xl">
+        迷わず探せて、
+        <span class="text-gradient"> ワンタップでコピーできる </span>
+        日本語プロンプト集
+      </h1>
+      <p class="mt-4 max-w-2xl text-sm leading-7 text-text-soft sm:text-base">
+        コーディング、レビュー、テスト、設計、デバッグ、ドキュメントまで。AI にそのまま貼って使える形へ整えた、
+        実務向けのプロンプトをカテゴリ別に収録しています。
+      </p>
+
+      <form action="/prompts/" method="get" class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <label class="sr-only" for="hero-search">プロンプトを検索</label>
+        <input
+          id="hero-search"
+          name="q"
+          type="search"
+          class="input-shell min-h-12 flex-1"
+          placeholder="例: PR レビュー、要件整理、E2E テスト"
+        />
+        <button type="submit" class="btn-primary min-h-12 px-5">
+          <Icon name="search" size={18} />
+          すぐ探す
+        </button>
+      </form>
+
+      <div class="mt-6 flex flex-wrap gap-3 text-sm">
+        <a href="/prompts/?sort=featured" class="chip">
+          <Icon name="star" size={15} />
+          おすすめから見る
+        </a>
+        <a href="/prompts/?category=%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC" class="chip">
+          <Icon name="scan-search" size={15} />
+          レビュー系を開く
+        </a>
+        <a href="/prompts/?category=%E8%A6%81%E4%BB%B6%E6%95%B4%E7%90%86" class="chip">
+          <Icon name="list-checks" size={15} />
+          要件整理から始める
+        </a>
+      </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+      <div class="surface-card p-5">
+        <p class="text-xs font-semibold tracking-[0.16em] text-text-soft uppercase">収録数</p>
+        <p class="mt-3 text-3xl font-bold text-text">{promptCount}<span class="ml-1 text-base text-text-soft">件</span></p>
+        <p class="mt-2 text-sm leading-6 text-text-soft">実務でそのまま貼りやすい粒度に調整済み。</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="text-xs font-semibold tracking-[0.16em] text-text-soft uppercase">カテゴリ</p>
+        <p class="mt-3 text-3xl font-bold text-text">{categoryCount}<span class="ml-1 text-base text-text-soft">分類</span></p>
+        <p class="mt-2 text-sm leading-6 text-text-soft">見つけやすさを優先したカテゴリ設計。</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="text-xs font-semibold tracking-[0.16em] text-text-soft uppercase">注目プロンプト</p>
+        <p class="mt-3 text-3xl font-bold text-text">{featuredCount}<span class="ml-1 text-base text-text-soft">件</span></p>
+        <p class="mt-2 text-sm leading-6 text-text-soft">最初の一枚に選びやすい定番だけを先頭表示。</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,137 @@
+---
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+  filled?: boolean;
+}
+
+const { name, size = 20, class: className = '', filled = false } = Astro.props;
+
+const icons: Record<string, string> = {
+  sun: `
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path>
+  `,
+  moon: `
+    <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 1 0 10.7 10.7Z"></path>
+  `,
+  search: `
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="m20 20-3.5-3.5"></path>
+  `,
+  copy: `
+    <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+  `,
+  check: `
+    <path d="M20 6 9 17l-5-5"></path>
+  `,
+  heart: filled
+    ? `<path fill="currentColor" stroke="currentColor" d="M12 20.5s-7.5-4.9-9.2-8.7C1.3 8.5 3.2 5 6.7 5c2 0 3.3 1 4.3 2.4C12 6 13.3 5 15.3 5c3.5 0 5.4 3.5 3.9 6.8C19.5 15.6 12 20.5 12 20.5Z"></path>`
+    : `<path d="M12 20.5s-7.5-4.9-9.2-8.7C1.3 8.5 3.2 5 6.7 5c2 0 3.3 1 4.3 2.4C12 6 13.3 5 15.3 5c3.5 0 5.4 3.5 3.9 6.8C19.5 15.6 12 20.5 12 20.5Z"></path>`,
+  history: `
+    <path d="M3 5v5h5"></path>
+    <path d="M3.5 10.5a8.5 8.5 0 1 0 2-4.7"></path>
+    <path d="M12 8.5V13l3 2"></path>
+  `,
+  'arrow-right': `
+    <path d="M5 12h14"></path>
+    <path d="m13 5 7 7-7 7"></path>
+  `,
+  star: `
+    <path d="m12 3 2.4 5.3 5.8.6-4.3 3.9 1.2 5.8L12 15.7l-5.1 2.9 1.2-5.8L3.8 8.9l5.8-.6L12 3Z"></path>
+  `,
+  sparkles: `
+    <path d="M12 3 13.6 8.4 19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"></path>
+    <path d="M5 3v3M3.5 4.5h3M19 18v3M17.5 19.5h3"></path>
+  `,
+  code: `
+    <path d="m8 6-6 6 6 6"></path>
+    <path d="m16 6 6 6-6 6"></path>
+    <path d="m14 3-4 18"></path>
+  `,
+  'scan-search': `
+    <path d="M4 8V6a2 2 0 0 1 2-2h2"></path>
+    <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+    <path d="M20 16v2a2 2 0 0 1-2 2h-2"></path>
+    <path d="M8 20H6a2 2 0 0 1-2-2v-2"></path>
+    <circle cx="11" cy="11" r="4"></circle>
+    <path d="m17 17-2.6-2.6"></path>
+  `,
+  wand: `
+    <path d="m15 4 5 5"></path>
+    <path d="m2 22 8-8"></path>
+    <path d="m14 5-9 9"></path>
+    <path d="M9 3v2M4 8H2M6 6 4.5 4.5M18 14h2M16 18v2"></path>
+  `,
+  flask: `
+    <path d="M10 3v6l-5.5 9.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"></path>
+    <path d="M8 3h8"></path>
+    <path d="M8 14h8"></path>
+  `,
+  bug: `
+    <path d="M9 9h6"></path>
+    <path d="M10 4h4"></path>
+    <rect x="7" y="7" width="10" height="11" rx="5"></rect>
+    <path d="M5 10h2M17 10h2M4 14h3M17 14h3M6 6 4 4M18 6l2-2"></path>
+  `,
+  layers: `
+    <path d="m12 3 9 5-9 5-9-5 9-5Z"></path>
+    <path d="m3 12 9 5 9-5"></path>
+    <path d="m3 16 9 5 9-5"></path>
+  `,
+  'file-text': `
+    <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7Z"></path>
+    <path d="M14 2v5h5"></path>
+    <path d="M9 13h6M9 17h6M9 9h2"></path>
+  `,
+  gauge: `
+    <path d="M12 14 16.5 9.5"></path>
+    <path d="M4.5 19a9 9 0 1 1 15 0"></path>
+    <path d="M5 19h14"></path>
+  `,
+  shield: `
+    <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z"></path>
+    <path d="m9.5 12 1.7 1.7 3.6-3.7"></path>
+  `,
+  'git-branch': `
+    <circle cx="6" cy="6" r="2.5"></circle>
+    <circle cx="18" cy="18" r="2.5"></circle>
+    <circle cx="18" cy="6" r="2.5"></circle>
+    <path d="M8.5 6h7M8.5 6c0 7 7 5 7 9"></path>
+  `,
+  'list-checks': `
+    <path d="M9 6h11M9 12h11M9 18h11"></path>
+    <path d="m3 6 1.2 1.2L6.7 4.8M3 12l1.2 1.2L6.7 10.8M3 18l1.2 1.2 2.5-2.4"></path>
+  `,
+  'wifi-off': `
+    <path d="m2 2 20 20"></path>
+    <path d="M16.7 11.8A8 8 0 0 0 6.4 8.6"></path>
+    <path d="M9.5 14.2a4 4 0 0 1 5 .6"></path>
+    <path d="M12 18h.01"></path>
+    <path d="M4.9 5A13 13 0 0 1 21 8"></path>
+  `,
+  x: `
+    <path d="m18 6-12 12"></path>
+    <path d="m6 6 12 12"></path>
+  `,
+};
+
+const markup = icons[name] ?? icons.sparkles;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.85"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+  set:html={markup}
+/>

@@ -1,0 +1,303 @@
+@import "@fontsource/m-plus-rounded-1c/400.css";
+@import "@fontsource/m-plus-rounded-1c/500.css";
+@import "@fontsource/m-plus-rounded-1c/700.css";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-display: "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-text-soft: var(--text-soft);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --shadow-soft: 0 18px 45px -30px color-mix(in oklab, var(--accent) 30%, transparent);
+  --shadow-card: 0 24px 80px -48px color-mix(in oklab, var(--accent) 42%, transparent);
+}
+
+:root {
+  --bg: oklch(97% 0.01 286);
+  --bg-elevated: oklch(99% 0.008 280);
+  --surface: oklch(100% 0 0 / 0.78);
+  --surface-strong: oklch(98% 0.012 286 / 0.98);
+  --card: oklch(100% 0 0 / 0.86);
+  --line: oklch(88% 0.02 286 / 0.55);
+  --text: oklch(28% 0.03 276);
+  --text-soft: oklch(49% 0.03 280);
+  --accent: oklch(59% 0.2 300);
+  --accent-strong: oklch(53% 0.23 302);
+  --success: oklch(68% 0.17 156);
+  --warning: oklch(78% 0.15 76);
+  --page-backdrop:
+    radial-gradient(circle at top left, color-mix(in oklab, var(--accent) 16%, transparent), transparent 38%),
+    radial-gradient(circle at top right, color-mix(in oklab, oklch(74% 0.18 240) 14%, transparent), transparent 32%),
+    linear-gradient(180deg, oklch(99% 0.01 290), oklch(96% 0.01 280));
+}
+
+html.dark {
+  --bg: oklch(17% 0.02 274);
+  --bg-elevated: oklch(21% 0.025 278);
+  --surface: oklch(24% 0.024 278 / 0.76);
+  --surface-strong: oklch(28% 0.026 280 / 0.92);
+  --card: oklch(22% 0.022 280 / 0.84);
+  --line: oklch(44% 0.04 286 / 0.5);
+  --text: oklch(94% 0.012 286);
+  --text-soft: oklch(76% 0.02 286);
+  --accent: oklch(70% 0.19 301);
+  --accent-strong: oklch(75% 0.22 302);
+  --success: oklch(79% 0.16 154);
+  --warning: oklch(82% 0.15 76);
+  --page-backdrop:
+    radial-gradient(circle at top left, color-mix(in oklab, var(--accent) 22%, transparent), transparent 33%),
+    radial-gradient(circle at top right, color-mix(in oklab, oklch(65% 0.14 240) 18%, transparent), transparent 30%),
+    linear-gradient(180deg, oklch(16% 0.02 278), oklch(12% 0.015 276));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--page-backdrop);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: auto;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(60px);
+}
+
+body::before {
+  width: 20rem;
+  height: 20rem;
+  top: 5rem;
+  right: -6rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 26%, transparent);
+  opacity: 0.45;
+}
+
+body::after {
+  width: 16rem;
+  height: 16rem;
+  left: -4rem;
+  bottom: 12rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, oklch(72% 0.14 240) 20%, transparent);
+  opacity: 0.28;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+a,
+button,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 76%, white);
+  outline-offset: 3px;
+}
+
+.shell {
+  margin-inline: auto;
+  width: min(100% - 1.25rem, 78rem);
+}
+
+.section-shell {
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--surface) 88%, transparent), color-mix(in oklab, var(--card) 88%, transparent));
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(18px);
+}
+
+.surface-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--line) 92%, transparent);
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, transparent), color-mix(in oklab, var(--surface) 86%, transparent));
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.surface-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, color-mix(in oklab, var(--accent) 14%, transparent), transparent 38%),
+    radial-gradient(circle at top right, color-mix(in oklab, white 10%, transparent), transparent 32%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.surface-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--line) 80%, transparent);
+  background: color-mix(in oklab, var(--surface) 86%, transparent);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.chip[data-active="true"] {
+  border-color: color-mix(in oklab, var(--accent) 62%, var(--line));
+  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
+  color: var(--text);
+}
+
+.input-shell {
+  width: 100%;
+  border: 1px solid color-mix(in oklab, var(--line) 88%, transparent);
+  border-radius: 1.2rem;
+  background: color-mix(in oklab, var(--surface-strong) 94%, transparent);
+  color: var(--text);
+  padding: 0.95rem 1rem;
+  font-size: 0.96rem;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, white 10%, transparent);
+}
+
+.input-shell::placeholder {
+  color: color-mix(in oklab, var(--text-soft) 72%, transparent);
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.15rem;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.btn-primary {
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, var(--line));
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 24%, var(--surface)), color-mix(in oklab, var(--accent-strong) 16%, var(--surface)));
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary {
+  border: 1px solid color-mix(in oklab, var(--line) 88%, transparent);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  color: var(--text);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+.eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: color-mix(in oklab, var(--accent) 62%, var(--text-soft));
+}
+
+.prompt-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.9;
+}
+
+.soft-divider {
+  border-color: color-mix(in oklab, var(--line) 84%, transparent);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, var(--text), color-mix(in oklab, var(--accent) 72%, white));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tap-lift {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.tap-lift:hover,
+.tap-lift:active {
+  transform: translateY(-2px);
+}
+
+.visually-muted {
+  color: var(--text-soft);
+}
+
+.grid-fade {
+  mask-image: linear-gradient(180deg, black 88%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
