@@ -1,0 +1,12 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div id="app-toast" class="pointer-events-none fixed inset-x-0 bottom-4 z-50 hidden px-4" aria-live="polite" aria-atomic="true">
+  <div class="mx-auto flex max-w-sm items-center gap-3 rounded-[1.75rem] border border-line bg-surface px-4 py-3 shadow-[var(--shadow-card)] backdrop-blur">
+    <span id="app-toast-icon" class="flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-accent">
+      <Icon name="check" size={18} />
+    </span>
+    <p id="app-toast-message" class="text-sm font-medium text-text">コピーしました</p>
+  </div>
+</div>
