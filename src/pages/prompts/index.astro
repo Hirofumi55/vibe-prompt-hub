@@ -1,0 +1,118 @@
+---
+import PromptCard from '../../components/prompts/PromptCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { prompts } from '../../data/prompts';
+import { getPopularTags } from '../../lib/prompts';
+import { SITE } from '../../lib/site';
+import { PROMPT_CATEGORIES } from '../../types/prompts';
+
+const popularTags = getPopularTags(12);
+const promptList = [...prompts].sort(
+  (left, right) => Number(right.isFeatured) - Number(left.isFeatured) || right.updatedAt.localeCompare(left.updatedAt),
+);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${SITE.name} 一覧`,
+  url: `${SITE.origin}/prompts/`,
+  description: 'カテゴリ、タグ、検索で絞り込みながら日本語プロンプトを探せる一覧ページ。',
+  inLanguage: 'ja-JP',
+};
+---
+
+<BaseLayout
+  title="プロンプト一覧"
+  description="コーディング、レビュー、テスト、設計、デバッグなどのカテゴリから、今すぐ使える日本語プロンプトを検索・絞り込みできます。"
+  currentPath="/prompts/"
+  canonicalPath="/prompts/"
+  structuredData={structuredData}
+>
+  <div data-prompts-page class="contents">
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Prompt Finder</p>
+      <div class="mt-2 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-text sm:text-4xl">プロンプト一覧</h1>
+          <p class="mt-3 max-w-2xl text-sm leading-7 text-text-soft">
+            キーワード、カテゴリ、タグで絞りながら、今の作業に合う一枚を素早く見つけられます。検索条件は URL に反映されるので共有も簡単です。
+          </p>
+        </div>
+        <div class="chip w-fit">
+          表示中 <span class="font-bold text-text" data-filter-count>{promptList.length}件</span>
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.55fr]">
+        <label class="block">
+          <span class="mb-2 block text-sm font-semibold text-text">キーワード検索</span>
+          <input
+            type="search"
+            class="input-shell min-h-12"
+            placeholder="例: PR レビュー、認可、README、E2E"
+            data-filter-search
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-sm font-semibold text-text">並び替え</span>
+          <select class="input-shell min-h-12 appearance-none" data-filter-sort>
+            <option value="featured">おすすめ順</option>
+            <option value="newest">新着順</option>
+            <option value="versatile">汎用性高</option>
+            <option value="practical">実務向け</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mt-6 space-y-4">
+        <div>
+          <p class="mb-3 text-sm font-semibold text-text">カテゴリ</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="chip" data-filter-category data-value="" data-active="true">すべて</button>
+            {PROMPT_CATEGORIES.map((category) => (
+              <button type="button" class="chip" data-filter-category data-value={category} aria-pressed="false">
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p class="mb-3 text-sm font-semibold text-text">人気タグ</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="chip" data-filter-tag data-value="" data-active="true">すべて</button>
+            {popularTags.map((tag) => (
+              <button type="button" class="chip" data-filter-tag data-value={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap items-center gap-2" data-active-filters hidden></div>
+      <button type="button" class="btn-secondary mt-4 min-h-11 px-5 text-sm" data-clear-filters hidden>
+        条件をクリア
+      </button>
+    </section>
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {promptList.map((prompt) => (
+          <PromptCard prompt={prompt} />
+        ))}
+      </div>
+
+      <div class="mt-6 rounded-[1.75rem] border border-dashed border-line px-5 py-8 text-sm leading-7 text-text-soft" data-empty-state hidden>
+        条件に合うプロンプトが見つかりませんでした。検索語を短くするか、カテゴリやタグを解除してみてください。
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import { initPromptsPage } from '../../scripts/prompts';
+
+    initPromptsPage();
+  </script>
+</BaseLayout>

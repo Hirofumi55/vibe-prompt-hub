@@ -1,0 +1,124 @@
+---
+import { buildPromptSearchText, isNewPrompt } from '../../lib/prompts';
+import { CATEGORY_META } from '../../lib/site';
+import type { PromptItem } from '../../types/prompts';
+import Icon from '../common/Icon.astro';
+
+interface Props {
+  prompt: PromptItem;
+  compact?: boolean;
+}
+
+const { prompt, compact = false } = Astro.props;
+const categoryMeta = CATEGORY_META[prompt.category];
+const updatedLabel = new Intl.DateTimeFormat('ja-JP', {
+  month: 'numeric',
+  day: 'numeric',
+}).format(new Date(prompt.updatedAt));
+---
+
+<article
+  class:list={[
+    'surface-card flex h-full flex-col',
+    compact ? 'min-h-[17rem]' : 'min-h-[21rem]',
+  ]}
+  data-prompt-card
+  data-prompt-id={prompt.id}
+  data-category={prompt.category}
+  data-tags={prompt.tags.join('|')}
+  data-recommended={prompt.recommendedFor.join('|')}
+  data-featured={prompt.isFeatured}
+  data-updated={prompt.updatedAt}
+  data-search={buildPromptSearchText(prompt)}
+>
+  <button
+    type="button"
+    class:list={[
+      'group/copy flex flex-1 flex-col text-left',
+      compact ? 'p-5' : 'p-5 sm:p-6',
+    ]}
+    data-copy-prompt
+    data-prompt-id={prompt.id}
+    data-prompt-title={prompt.title}
+    data-copy-text={prompt.prompt}
+    aria-label={`${prompt.title} をコピーする`}
+  >
+    <div class="flex items-start justify-between gap-4">
+      <div class="min-w-0">
+        <div class="flex flex-wrap gap-2">
+          <span class="chip">
+            <Icon name={categoryMeta.icon} size={15} />
+            {prompt.category}
+          </span>
+          {prompt.isFeatured && (
+            <span class="chip bg-accent/15 text-text">
+              <Icon name="star" size={14} />
+              おすすめ
+            </span>
+          )}
+          {isNewPrompt(prompt) && (
+            <span class="chip bg-success/12 text-text">
+              <Icon name="sparkles" size={14} />
+              新着
+            </span>
+          )}
+        </div>
+
+        <h3 class:list={['mt-4 font-bold tracking-tight text-text', compact ? 'text-lg leading-8' : 'text-xl leading-8']}>
+          {prompt.title}
+        </h3>
+        <p class="mt-2 text-sm leading-7 text-text-soft">{prompt.summary}</p>
+      </div>
+
+      <span class="copy-indicator flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface text-text-soft transition duration-200 group-hover/copy:border-accent/60 group-hover/copy:text-accent">
+        <Icon name="copy" size={18} class="copy-icon transition duration-200" />
+      </span>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-2">
+      {prompt.tags.slice(0, compact ? 3 : 4).map((tag) => (
+        <span class="chip text-xs">{tag}</span>
+      ))}
+    </div>
+
+    <div class:list={['mt-auto pt-5', compact ? 'space-y-3' : 'space-y-4']}>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div class="rounded-[1.25rem] border border-line bg-bg-elevated/60 px-4 py-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-text-soft">想定用途</p>
+          <p class="mt-2 text-sm leading-6 text-text">{prompt.useCases[0]}</p>
+        </div>
+        <div class="rounded-[1.25rem] border border-line bg-bg-elevated/60 px-4 py-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-text-soft">おすすめ対象</p>
+          <p class="mt-2 text-sm leading-6 text-text">{prompt.recommendedFor.slice(0, 2).join(' / ')}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 text-xs text-text-soft">
+        <span>難易度: {prompt.difficulty}</span>
+        <span>更新: {updatedLabel}</span>
+      </div>
+    </div>
+  </button>
+
+  <div class="soft-divider flex items-center justify-between gap-3 border-t px-5 py-4 sm:px-6">
+    <button
+      type="button"
+      class="chip min-h-11 text-sm"
+      data-favorite-button
+      data-prompt-id={prompt.id}
+      data-prompt-title={prompt.title}
+      aria-pressed="false"
+      aria-label={`${prompt.title} をお気に入りに追加する`}
+    >
+      <span data-favorite-icon class="flex items-center">
+        <Icon name="heart" size={16} />
+      </span>
+      <span data-favorite-label>お気に入り</span>
+    </button>
+
+    <a href={`/prompts/${prompt.id}/`} class="chip min-h-11 text-sm">
+      詳細を見る
+      <Icon name="arrow-right" size={16} />
+    </a>
+  </div>
+</article>
