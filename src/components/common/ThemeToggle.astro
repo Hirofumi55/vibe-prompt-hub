@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  type="button"
+  class="btn-secondary tap-lift min-h-11 px-4 text-sm"
+  data-theme-toggle
+  aria-label="テーマを切り替える"
+>
+  <span class="relative flex h-5 w-5 items-center justify-center">
+    <span data-theme-icon="sun" class="absolute inset-0 flex items-center justify-center">
+      <Icon name="sun" size={18} />
+    </span>
+    <span data-theme-icon="moon" class="absolute inset-0 hidden items-center justify-center">
+      <Icon name="moon" size={18} />
+    </span>
+  </span>
+  <span data-theme-label>ライト表示</span>
+</button>

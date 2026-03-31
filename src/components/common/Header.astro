@@ -1,0 +1,48 @@
+---
+import { NAV_LINKS, SITE } from '../../lib/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<header class="shell sticky top-3 z-40 pt-3">
+  <div class="section-shell px-4 py-4 sm:px-5">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center justify-between gap-4">
+        <a href="/" class="min-w-0 text-left">
+          <div class="eyebrow">Prompt Hub</div>
+          <div class="mt-1 text-base font-bold text-text sm:text-lg">{SITE.name}</div>
+          <div class="mt-1 text-xs text-text-soft sm:text-sm">スマホで探して、押して、そのまま貼れる。</div>
+        </a>
+        <div class="md:hidden">
+          <ThemeToggle />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 md:gap-4">
+        <nav class="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 md:flex-none md:overflow-visible md:pb-0" aria-label="主要ナビゲーション">
+          {NAV_LINKS.map((link) => {
+            const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href));
+            return (
+              <a
+                href={link.href}
+                class="chip shrink-0"
+                data-active={isActive}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+        </nav>
+        <div class="hidden md:block">
+          <ThemeToggle />
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
