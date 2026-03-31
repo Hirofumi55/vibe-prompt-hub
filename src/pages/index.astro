@@ -1,0 +1,155 @@
+---
+import HeroSection from '../components/home/HeroSection.astro';
+import PromptCard from '../components/prompts/PromptCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { prompts } from '../data/prompts';
+import { getCategoryCounts, getFeaturedPrompts } from '../lib/prompts';
+import { CATEGORY_META, SITE } from '../lib/site';
+import { PROMPT_CATEGORIES } from '../types/prompts';
+
+const categoryCounts = getCategoryCounts();
+const featuredPrompts = getFeaturedPrompts(6);
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.origin,
+    description: SITE.description,
+    inLanguage: 'ja-JP',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${SITE.origin}/prompts/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: SITE.name,
+    url: SITE.origin,
+    description: SITE.description,
+    inLanguage: 'ja-JP',
+  },
+];
+---
+
+<BaseLayout currentPath="/" structuredData={structuredData}>
+  <div data-home-page class="contents">
+    <HeroSection promptCount={prompts.length} categoryCount={PROMPT_CATEGORIES.length} featuredCount={featuredPrompts.length} />
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Category Guide</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">おすすめカテゴリ</h2>
+          <p class="mt-2 text-sm leading-7 text-text-soft">迷ったら、今の作業フェーズに近いカテゴリから入るのが最短です。</p>
+        </div>
+        <a href="/prompts/" class="chip hidden sm:inline-flex">
+          すべて見る
+        </a>
+      </div>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {PROMPT_CATEGORIES.map((category) => (
+          <a href={`/prompts/?category=${encodeURIComponent(category)}`} class="surface-card tap-lift p-5">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-sm font-semibold text-text">{category}</p>
+                <p class="mt-2 text-sm leading-7 text-text-soft">{CATEGORY_META[category].description}</p>
+              </div>
+              <span class="chip shrink-0">{categoryCounts[category] ?? 0}件</span>
+            </div>
+            <p class="mt-4 text-xs font-medium tracking-[0.08em] text-text-soft uppercase">{CATEGORY_META[category].helper}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Featured Prompts</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">最初に使いやすい注目プロンプト</h2>
+        </div>
+        <a href="/prompts/?sort=featured" class="chip hidden sm:inline-flex">もっと見る</a>
+      </div>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {featuredPrompts.map((prompt) => (
+          <PromptCard prompt={prompt} compact />
+        ))}
+      </div>
+    </section>
+
+    <div class="grid gap-6 xl:grid-cols-2">
+      <section class="section-shell px-5 py-6 sm:px-7" data-home-section="recent">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <p class="eyebrow">Recent Copies</p>
+            <h2 class="mt-2 text-2xl font-bold text-text">最近使った</h2>
+          </div>
+          <span class="chip" data-home-count>0件</span>
+        </div>
+        <p class="mt-2 text-sm leading-7 text-text-soft">コピー履歴から、よく使うプロンプトへすぐ戻れます。</p>
+        <div class="mt-6 grid gap-4" data-home-grid></div>
+        <div class="mt-6 rounded-[1.75rem] border border-dashed border-line px-5 py-6 text-sm leading-7 text-text-soft" data-home-empty>
+          まだ履歴がありません。気になるカードをタップしてコピーすると、ここに最近使ったプロンプトが並びます。
+        </div>
+      </section>
+
+      <section class="section-shell px-5 py-6 sm:px-7" data-home-section="favorites">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <p class="eyebrow">Pinned</p>
+            <h2 class="mt-2 text-2xl font-bold text-text">お気に入り</h2>
+          </div>
+          <span class="chip" data-home-count>0件</span>
+        </div>
+        <p class="mt-2 text-sm leading-7 text-text-soft">頻繁に使う定番プロンプトをストックして、毎回探す手間を減らせます。</p>
+        <div class="mt-6 grid gap-4" data-home-grid></div>
+        <div class="mt-6 rounded-[1.75rem] border border-dashed border-line px-5 py-6 text-sm leading-7 text-text-soft" data-home-empty>
+          まだお気に入りがありません。カード下部の「お気に入り」を押すと、この欄にいつでも呼び出せるよう保存されます。
+        </div>
+      </section>
+    </div>
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="eyebrow">One Tap Workflow</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">このサイトの使い方</h2>
+        </div>
+        <a href="/about/" class="btn-secondary min-h-11 px-5 text-sm">詳しく見る</a>
+      </div>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="surface-card p-5">
+          <p class="text-sm font-semibold text-text">1. 今の作業フェーズで絞る</p>
+          <p class="mt-2 text-sm leading-7 text-text-soft">カテゴリ、タグ、検索を使って、必要な場面に近いプロンプトだけを絞り込みます。</p>
+        </div>
+        <div class="surface-card p-5">
+          <p class="text-sm font-semibold text-text">2. カードを押してコピーする</p>
+          <p class="mt-2 text-sm leading-7 text-text-soft">一覧では大きなタップ領域で即コピー。詳細ページでは全文と利用例を見ながら確認できます。</p>
+        </div>
+        <div class="surface-card p-5">
+          <p class="text-sm font-semibold text-text">3. お気に入りに固定する</p>
+          <p class="mt-2 text-sm leading-7 text-text-soft">よく使うものは保存。履歴にも残るので、次回は一瞬で再利用できます。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="home-card-pool" class="hidden" aria-hidden="true">
+    {prompts.map((prompt) => (
+      <PromptCard prompt={prompt} compact />
+    ))}
+  </div>
+
+  <script>
+    import { initHomePage } from '../scripts/home';
+
+    initHomePage();
+  </script>
+</BaseLayout>
