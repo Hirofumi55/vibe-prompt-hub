@@ -4,3 +4,5 @@ node_modules
 .DS_Store
 pnpm-debug.log*
 coverage
+playwright-report
+test-results

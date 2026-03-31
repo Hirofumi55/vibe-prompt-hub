@@ -24,6 +24,7 @@
 - Styling: `Tailwind CSS`
 - PWA: `@vite-pwa/astro`
 - Sitemap: `@astrojs/sitemap`
+- E2E Test: `Playwright`
 - Font: `@fontsource/m-plus-rounded-1c`
 - Data: `src/data/prompts.ts`
 - Client-side: 最小限の Vanilla TypeScript
@@ -80,6 +81,18 @@ pnpm build
 pnpm check
 pnpm preview
 ```
+
+## 自動テスト
+
+```bash
+pnpm test:e2e
+```
+
+`Playwright` で以下を確認します。
+
+- ホームのカテゴリカードから絞り込み済み一覧へ遷移できること
+- 一覧から詳細ページへ遷移できること
+- コピーとお気に入り保存が `localStorage` に反映されること
 
 ## PWA 確認方法
 

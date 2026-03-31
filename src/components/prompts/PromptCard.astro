@@ -116,7 +116,7 @@ const updatedLabel = new Intl.DateTimeFormat('ja-JP', {
       <span data-favorite-label>お気に入り</span>
     </button>
 
-    <a href={`/prompts/${prompt.id}/`} class="chip min-h-11 text-sm">
+    <a href={`/prompts/${prompt.id}/`} class="chip min-h-11 text-sm" data-prompt-detail-link>
       詳細を見る
       <Icon name="arrow-right" size={16} />
     </a>

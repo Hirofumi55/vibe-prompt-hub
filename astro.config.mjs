@@ -62,13 +62,14 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,txt,xml}'],
-        navigateFallback: '/offline/',
+        navigateFallbackDenylist: [/^\/(?!$)/],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
       },
       devOptions: {
         enabled: true,
+        navigateFallbackAllowlist: [/^\/$/],
       },
       experimental: {
         directoryAndTrailingSlashHandler: true,

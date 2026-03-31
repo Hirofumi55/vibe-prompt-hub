@@ -10,12 +10,14 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "test:e2e": "pnpm build && playwright test"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/m-plus-rounded-1c": "^5.2.10",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.2.2",
     "@vite-pwa/astro": "^1.2.0",
     "astro": "^5.18.0",
