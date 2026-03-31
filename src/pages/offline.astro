@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="オフライン時の案内"
+  description="ネットワークが不安定な時でも、このサイトをどう使えるかの案内ページです。"
+  canonicalPath="/offline/"
+  noindex
+>
+  <section class="section-shell px-5 py-6 sm:px-7">
+    <p class="eyebrow">Offline Mode</p>
+    <h1 class="mt-2 text-3xl font-bold text-text">オフラインでも使えること</h1>
+    <p class="mt-4 max-w-3xl text-sm leading-8 text-text-soft">
+      このサイトは PWA 対応です。いちど開いたページや基本 UI はオフラインでも閲覧でき、ホーム画面からすばやく呼び出せます。
+    </p>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      <div class="surface-card p-5">
+        <p class="text-sm font-semibold text-text">見られるもの</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">最近閲覧したページ、一覧 UI、詳細ページ、保存済みのお気に入り表示。</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="text-sm font-semibold text-text">おすすめの準備</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">よく使うページを事前に開き、お気に入りへ保存しておくとオフラインでも再利用しやすくなります。</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="text-sm font-semibold text-text">再接続後</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">接続が戻ると最新データが同期されます。更新案内が出たら再読み込みしてください。</p>
+      </div>
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="/" class="btn-secondary min-h-11 px-5 text-sm">ホームへ戻る</a>
+      <a href="/prompts/" class="btn-primary min-h-11 px-5 text-sm">プロンプト一覧を開く</a>
+    </div>
+  </section>
+</BaseLayout>

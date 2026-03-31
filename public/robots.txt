@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vibe-prompt-hub.pages.dev/sitemap-index.xml

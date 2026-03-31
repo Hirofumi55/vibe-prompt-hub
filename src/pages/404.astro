@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="ページが見つかりません" description="指定されたページは存在しないか、移動した可能性があります。" noindex>
+  <section class="section-shell px-5 py-10 sm:px-7 sm:py-12">
+    <p class="eyebrow">404</p>
+    <h1 class="mt-2 text-3xl font-bold text-text sm:text-4xl">ページが見つかりません</h1>
+    <p class="mt-4 max-w-2xl text-sm leading-8 text-text-soft">
+      URL が変わったか、まだ生成されていない可能性があります。よく使う導線を下に置いているので、必要なページへ戻ってください。
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      <a href="/" class="surface-card tap-lift p-5">
+        <p class="text-sm font-semibold text-text">ホームへ戻る</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">おすすめカテゴリや最近使ったプロンプトから探し直せます。</p>
+      </a>
+      <a href="/prompts/" class="surface-card tap-lift p-5">
+        <p class="text-sm font-semibold text-text">一覧を開く</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">検索、カテゴリ、タグから必要なプロンプトへ直接移動できます。</p>
+      </a>
+      <a href="/favorites/" class="surface-card tap-lift p-5">
+        <p class="text-sm font-semibold text-text">お気に入りを見る</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">保存済みのプロンプトがあれば、最短でいつもの一枚に戻れます。</p>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

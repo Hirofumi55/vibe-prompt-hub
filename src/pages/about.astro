@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'このサイトの使い方',
+  inLanguage: 'ja-JP',
+};
+---
+
+<BaseLayout
+  title="このサイトの使い方"
+  description="プロンプト集サイトの使い方と、バイブコーディングで成果を出しやすくするコツをまとめています。"
+  currentPath="/about/"
+  canonicalPath="/about/"
+  structuredData={structuredData}
+>
+  <section class="section-shell px-5 py-6 sm:px-7">
+    <p class="eyebrow">About This Site</p>
+    <h1 class="mt-2 text-3xl font-bold text-text sm:text-4xl">このサイトの使い方</h1>
+    <p class="mt-4 max-w-3xl text-sm leading-8 text-text-soft sm:text-base">
+      このサイトは「今の作業フェーズに合う指示文を、すぐコピーして AI に貼る」ことだけに集中して設計しています。
+      一覧で探しやすく、詳細で確認しやすく、スマホでも片手で使いやすいことを最優先にしています。
+    </p>
+  </section>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Basic Flow</p>
+      <h2 class="mt-2 text-2xl font-bold text-text">基本の使い方</h2>
+      <ol class="mt-5 space-y-3 text-sm leading-7 text-text">
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">1. 今の悩みに近いカテゴリを選び、一覧ページで検索やタグ絞り込みを使います。</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">2. 一覧カードを押して即コピー、必要なら詳細ページで全文と利用例を確認します。</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">3. AI の返答が浅い場合は、「条件」「出力形式」「確認事項」を少し足して再度投げます。</li>
+      </ol>
+    </section>
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Vibe Coding Tips</p>
+      <h2 class="mt-2 text-2xl font-bold text-text">バイブコーディングのコツ</h2>
+      <ul class="mt-5 space-y-3 text-sm leading-7 text-text">
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">目的だけでなく、守るべき制約も一緒に伝えると実務向けの回答になりやすくなります。</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">「先に確認事項を出してください」と添えると、勝手な前提で進まれにくくなります。</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">大きなタスクは分解プロンプトを先に使い、その後に個別の実装プロンプトを使うと精度が安定します。</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Prompt Quality</p>
+      <h2 class="mt-2 text-2xl font-bold text-text">良いプロンプトの条件</h2>
+      <ul class="mt-5 space-y-3 text-sm leading-7 text-text">
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">何をしてほしいかが明確である</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">出力形式が指定されている</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">制約や優先順位がわかる</li>
+        <li class="rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4">不明点の扱いが定義されている</li>
+      </ul>
+    </section>
+
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Adding Data</p>
+      <h2 class="mt-2 text-2xl font-bold text-text">プロンプトの追加方法</h2>
+      <p class="mt-5 text-sm leading-8 text-text-soft">
+        新しいプロンプトは `src/data/prompts.ts` に追加します。`id`、`title`、`category`、`summary`、`tags`、
+        `prompt`、`useCases`、`recommendedFor`、`difficulty`、`isFeatured`、`updatedAt` を揃えるだけで一覧と詳細へ自動反映されます。
+      </p>
+    </section>
+  </div>
+</BaseLayout>
