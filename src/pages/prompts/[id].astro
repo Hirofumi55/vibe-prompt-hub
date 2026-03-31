@@ -1,0 +1,152 @@
+---
+import PromptCard from '../../components/prompts/PromptCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { prompts } from '../../data/prompts';
+import { getRelatedPrompts } from '../../lib/prompts';
+import { SITE } from '../../lib/site';
+import type { PromptItem } from '../../types/prompts';
+
+export function getStaticPaths() {
+  return prompts.map((prompt) => ({
+    params: { id: prompt.id },
+    props: { prompt },
+  }));
+}
+
+const { prompt } = Astro.props as { prompt: PromptItem };
+const relatedPrompts = getRelatedPrompts(prompt, 3);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: prompt.title,
+  description: prompt.summary,
+  url: `${SITE.origin}/prompts/${prompt.id}/`,
+  inLanguage: 'ja-JP',
+  dateModified: prompt.updatedAt,
+  keywords: prompt.tags.join(', '),
+  genre: prompt.category,
+};
+---
+
+<BaseLayout
+  title={prompt.title}
+  description={`${prompt.summary} カテゴリ: ${prompt.category}。`}
+  currentPath="/prompts/"
+  canonicalPath={`/prompts/${prompt.id}/`}
+  structuredData={structuredData}
+>
+  <section class="section-shell px-5 py-6 sm:px-7">
+    <a href="/prompts/" class="chip w-fit">一覧へ戻る</a>
+
+    <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <div class="flex flex-wrap gap-2">
+          <span class="chip" data-active="true">{prompt.category}</span>
+          {prompt.isFeatured && <span class="chip">おすすめ</span>}
+          <span class="chip">難易度: {prompt.difficulty}</span>
+        </div>
+        <h1 class="mt-4 text-3xl font-bold leading-tight text-text sm:text-4xl">{prompt.title}</h1>
+        <p class="mt-4 text-sm leading-8 text-text-soft sm:text-base">{prompt.summary}</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {prompt.tags.map((tag) => (
+            <a href={`/prompts/?tag=${encodeURIComponent(tag)}`} class="chip">
+              {tag}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="surface-card w-full max-w-sm p-5">
+        <p class="text-sm font-semibold text-text">ワンタップ操作</p>
+        <p class="mt-2 text-sm leading-7 text-text-soft">詳細を確認してからコピーしたい時のために、全文コピーとお気に入り保存をここから使えます。</p>
+        <div class="mt-4 flex flex-col gap-3">
+          <button
+            type="button"
+            class="btn-primary min-h-12 w-full"
+            data-copy-prompt
+            data-prompt-id={prompt.id}
+            data-prompt-title={prompt.title}
+            data-copy-text={prompt.prompt}
+          >
+            このプロンプトをコピー
+          </button>
+          <button
+            type="button"
+            class="btn-secondary min-h-12 w-full"
+            data-favorite-button
+            data-prompt-id={prompt.id}
+            data-prompt-title={prompt.title}
+            aria-pressed="false"
+          >
+            <span data-favorite-label>お気に入り</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+    <section class="section-shell px-5 py-6 sm:px-7">
+      <p class="eyebrow">Prompt Body</p>
+      <h2 class="mt-2 text-2xl font-bold text-text">全文</h2>
+      <pre class="prompt-body mt-6 overflow-x-auto rounded-[1.75rem] border border-line bg-bg-elevated/70 p-5 text-sm text-text sm:p-6">{prompt.prompt}</pre>
+    </section>
+
+    <div class="space-y-6">
+      <section class="section-shell px-5 py-6 sm:px-7">
+        <p class="eyebrow">Use Cases</p>
+        <h2 class="mt-2 text-2xl font-bold text-text">どんな場面で使うか</h2>
+        <ul class="mt-5 space-y-3">
+          {prompt.useCases.map((useCase) => (
+            <li class="rounded-[1.25rem] border border-line bg-bg-elevated/60 px-4 py-3 text-sm leading-7 text-text">
+              {useCase}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="section-shell px-5 py-6 sm:px-7">
+        <p class="eyebrow">Recommended For</p>
+        <h2 class="mt-2 text-2xl font-bold text-text">おすすめ対象</h2>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {prompt.recommendedFor.map((item) => (
+            <span class="chip">{item}</span>
+          ))}
+        </div>
+      </section>
+
+      {prompt.inputExample && (
+        <section class="section-shell px-5 py-6 sm:px-7">
+          <p class="eyebrow">Example</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">入力例</h2>
+          <p class="mt-5 rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4 text-sm leading-7 text-text">{prompt.inputExample}</p>
+        </section>
+      )}
+
+      {prompt.outputExample && (
+        <section class="section-shell px-5 py-6 sm:px-7">
+          <p class="eyebrow">Expected Output</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">期待する出力例</h2>
+          <p class="mt-5 rounded-[1.5rem] border border-line bg-bg-elevated/60 px-4 py-4 text-sm leading-7 text-text">{prompt.outputExample}</p>
+        </section>
+      )}
+    </div>
+  </div>
+
+  <section class="section-shell px-5 py-6 sm:px-7">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Related</p>
+        <h2 class="mt-2 text-2xl font-bold text-text">関連プロンプト</h2>
+      </div>
+      <a href="/prompts/" class="chip">一覧へ</a>
+    </div>
+
+    <div class="mt-6 grid gap-4 lg:grid-cols-3">
+      {relatedPrompts.map((related) => (
+        <PromptCard prompt={related} compact />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
